@@ -35,10 +35,13 @@ class Graph extends Component<IProps, {}> {
     const elem: PerspectiveViewerElement = document.getElementsByTagName('perspective-viewer')[0] as unknown as PerspectiveViewerElement;
 
     const schema = {
-      stock: 'string',
-      top_ask_price: 'float',
-      top_bid_price: 'float',
+      price_abc: 'float',
+      price_def: 'float',
+      ratioe: 'float',
       timestamp: 'date',
+      upper_bound:'float',
+      lower_bound:'float',
+      trigger_alert:'float',
     };
 
     if (window.perspective && window.perspective.worker()) {
@@ -49,6 +52,19 @@ class Graph extends Component<IProps, {}> {
 
       // Add more Perspective configurations here.
       elem.load(this.table);
+      elem.setAttribute('view','y_line');
+      elem.setAttribute('row-pivotes','["timestamp"]');
+      elem.setAttribute('columns','["ratio","lower_bound", "upper_bound","trigger_alert"]');
+      elem.setAttribute('aggregrates',JSON.stringify({
+        price_abc: 'avg',
+        price_def: 'avg',
+        ratioe: 'avg',
+        timestamp: 'distinct_count',
+        upper_bound:'avg',
+        lower_bound:'avg',
+        trigger_alert:'avg',
+        
+      }));
     }
   }
 
